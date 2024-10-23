@@ -97,7 +97,6 @@
         </div>
     </div>
     @endif
-
     <table class="datatable align-middle table table-light table-striped text-center">
         <thead>
             <tr class="table-primary">
