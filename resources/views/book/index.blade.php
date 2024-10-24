@@ -137,7 +137,9 @@
             @endforeach
         </tbody>
     </table>
-
+    <div class="d-flex justify-content-end">
+        <a href="{{ route('buku.create') }}" class="btn btn-primary">Tambah Buku</a>
+    </div>
     <div class="d-flex gap-4">
     <h6>Jumlah Buku : {{ $jumlahBuku }}</h6>
     <h6>Total Harga : {{"Rp. " . number_format($totalPrice, 2, ',', '.') }}</h6>
