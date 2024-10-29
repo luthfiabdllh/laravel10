@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RegistrationSuccess;
 use Illuminate\Http\Request;
 use App\Models\User; // Assuming you are using the User model
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class LoginRegisterController extends Controller
 {
@@ -45,7 +47,7 @@ class LoginRegisterController extends Controller
         ]);
 
         // Create a new user
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -58,6 +60,9 @@ class LoginRegisterController extends Controller
 
         // Regenerate session
         $request->session()->regenerate();
+
+        //send email
+        Mail::to($user->email)->send(new RegistrationSuccess($user));
 
         // Redirect to dashboard with success message
         return redirect('/book')->with('login', 'You have successfully registered & logged in!');

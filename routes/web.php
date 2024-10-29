@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\SendEmailController;
 use App\Models\Book;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +33,8 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', 'logout')->name('logout');
 });
+
+Route::get('/sendemail', [SendEmailController::class, 'index'])->name('kirim-email');
+
+Route::post('/post-email', [SendEmailController::class, 'store'])->name('post-email');
 
