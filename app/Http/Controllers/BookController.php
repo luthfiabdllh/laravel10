@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
+
     public function __construct()
     {
-        $this->middleware('auth')->except(['index']);
+    $this->middleware('auth')->only('index');
+    $this->middleware('admin')->only('create', 'store', 'edit', 'update', 'destroy');
     }
 
     // table pages
@@ -35,14 +37,24 @@ class BookController extends Controller
             'title' => 'required|string',
             'creator' => 'required|string|max:30',
             'price' => 'required|numeric',
-            'publication_date' => 'required|date'
+            'publication_date' => 'required|date',
+            'photo' => 'image|nullable|max:1999'
         ]);
+
+        if($request->hasFile('photo')){
+            $filenameWithExt = $request->file('photo')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            $filenameSimpan = $filename . '_' . time() . '.' . $extension;
+            $path = $request->file('photo')->storeAs('public', $filenameSimpan);
+        }
 
         $book = new Book();
         $book->title = $request->title;
-        $book->author_id = Auth::user()->id;
+        $book->author_id = Auth::user()->id ;
         $book->price = $request->price;
         $book->publication_date = $request->publication_date;
+        $book->photo = $filenameSimpan;
         $book->save();
 
         return redirect('/book')->with('created', 'Data buku berhasil dibuat');

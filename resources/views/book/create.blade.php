@@ -16,7 +16,7 @@
     <div class="position-absolute top-50 start-50 translate-middle">
         <div class="rounded border border-success p-4 mb-2 border-opacity-50">
             <h4 class="fw-bold">Tambah Buku</h4>
-            <form action="{{ route('book.store') }}" method="POST">
+            <form action="{{ route('book.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="my-4">
                     <div class="d-flex flex-column input my-3">
@@ -34,6 +34,15 @@
                     <div class="d-flex flex-column my-3">
                         <label for="publication_date" class="form-label">Publication Date</label>
                         <input class="form-control" type="date" name="publication_date">
+                    </div>
+                    <div class="d-flex flex-column my-3">
+                        <label for="photo" class="form-label">Image</label>
+                        <input class="form-control @error('photo') is-invalid @enderror" id="photo" type="file" name="photo" value="{{old('photo')}}">
+                        @if ($errors->has('photo'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('photo') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">

@@ -102,14 +102,15 @@
             <tr class="table-primary">
                 <th>Number</th>
                 <th>ID</th>
+                <th>Foto</th>
                 <th>Book's Title</th>
                 <th>Creator</th>
                 <th>Price</th>
                 <th>Publication Date</th>
-                @auth
+                @if(Auth::check() && Auth::user()->role == 'admin')
                 <th>Update</th>
                 <th>Hapus</th>
-                @endauth
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -117,11 +118,12 @@
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{ $book->id }}</td>
+                    <td><img src="{{ asset('storage/' . $book->photo) }}" width="150px" alt=""></td>
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->author->name }}</td>
                     <td>{{ "Rp. " . number_format($book->price, 2, ',', '.') }}</td>
                     <td>{{ \Carbon\Carbon::parse($book->publication_date)->format('d-m-Y') }}</td>
-                    @auth
+                    @if(Auth::check() && Auth::user()->role == 'admin')
                     <td>
                         <a class="btn btn-primary" href="{{ route('book.edit', $book->id) }}">Update</a>
                     </td>
@@ -132,16 +134,16 @@
                             <button onclick="return confirm('yakin mau hapus?')" type="submit" class="btn btn-danger">Hapus</button>
                         </form>
                     </td>
-                    @endauth
+                    @endif
                 </tr>
             @endforeach
         </tbody>
     </table>
-    @auth
+    @if(Auth::check() && Auth::user()->role == 'admin')
     <div class="d-flex justify-content-end">
         <a href="{{ route('book.create') }}" class="btn btn-primary">Tambah Buku</a>
     </div>
-    @endauth
+    @endif
     <div class="d-flex gap-4">
     <h6>Jumlah Buku : {{ $jumlahBuku }}</h6>
     <h6>Total Harga : {{"Rp. " . number_format($totalPrice, 2, ',', '.') }}</h6>

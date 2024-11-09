@@ -20,6 +20,20 @@ class DatabaseSeeder extends Seeder
         Book::factory(100)->recycle([
             User::all()
         ])->create();
+
+        User::create([
+            'name' => 'Admin',
+            'email' => 'ahmadabdllh000@gmail.com',
+            'password' => bcrypt('admin12345'),
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'Admin',
+            'email' => 'ahmad@gmail.com',
+            'password' => bcrypt('admin12345'),
+            'role' => 'user',
+        ]);
     }
 }
 

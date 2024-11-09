@@ -10,11 +10,11 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'author_id', 'price', 'publication_date'];
+    protected $fillable = ['title', 'author_id', 'price', 'publication_date', 'photo'];
     protected $with = ['author'];
 
     public function author() : BelongsTo {
         return $this->belongsTo(User::class);
     }
-    
+
 }
