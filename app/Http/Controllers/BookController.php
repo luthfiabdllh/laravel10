@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class BookController extends Controller
 {
@@ -38,15 +40,34 @@ class BookController extends Controller
             'creator' => 'required|string|max:30',
             'price' => 'required|numeric',
             'publication_date' => 'required|date',
-            'photo' => 'image|nullable|max:1999'
+            'photo' => 'image|nullable|max:1999',
         ]);
 
+         // Default nilai untuk nama file jika tidak ada gambar
+        $filenameOriginal = null;
+        $filenameResized = null;
+
         if($request->hasFile('photo')){
-            $filenameWithExt = $request->file('photo')->getClientOriginalName();
+            $manager = new ImageManager(new Driver());
+
+            // Ambil file gambar
+            $file = $request->file('photo');
+            $filenameWithExt = $file->getClientOriginalName();
+
+            $image = $manager->read($file);
+
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('photo')->getClientOriginalExtension();
-            $filenameSimpan = $filename . '_' . time() . '.' . $extension;
-            $path = $request->file('photo')->storeAs('public', $filenameSimpan);
+            $extension = $file->getClientOriginalExtension();
+
+            // Simpan original image
+            $filenameOriginal = $filename . '_original_' . time() . '.' . $extension;
+            $file->storeAs('public/photos', $filenameOriginal); // Simpan file original
+
+            // Buat dan simpan resized image
+            $filenameResized = $filename . '_resized_' . time() . '.' . $extension;
+            $resizedImage = $manager->read($file);
+            $resizedImage = $resizedImage->resize(300,300);// Resize sesuai kebutuhan
+            $resizedImage->save(storage_path('app/public/photos/' . $filenameResized)); // Simpan file resized
         }
 
         $book = new Book();
@@ -54,7 +75,8 @@ class BookController extends Controller
         $book->author_id = Auth::user()->id ;
         $book->price = $request->price;
         $book->publication_date = $request->publication_date;
-        $book->photo = $filenameSimpan;
+        $book->photo = $filenameOriginal; // Gambar original
+        $book->photoTable = $filenameResized; // Gambar resized
         $book->save();
 
         return redirect('/book')->with('created', 'Data buku berhasil dibuat');
@@ -91,4 +113,9 @@ class BookController extends Controller
 
         return redirect('/book')->with('updated', 'Data buku berhasil diperbarui');
     }
+
+    // public function show($id){
+    //     $book = Book::find($id);
+    //     return Storage
+    // }
 }

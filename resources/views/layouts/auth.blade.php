@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Fixed the 'X-UA-Compatible' meta tag -->
     <title>Laravel 10 Custom User Registration & Login Tutorial | ALIPHPTricks.com</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="path/to/lightbox.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('lightbox2/dist/css/lightbox.min.css')}}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-primary">
@@ -37,6 +39,10 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ (request()->is('gallery')) ? 'active' : '' }}" href="{{
+                       route('gallery.index') }}">Gallery</a>
+                    </li>
                     @endguest
                 </ul>
             </div>
@@ -53,5 +59,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-
+    <script src="{{ asset('lightbox2/dist/js/lightbox-plus-jquery.min.js')}}"></script>
 </body>

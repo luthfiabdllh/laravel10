@@ -118,7 +118,29 @@
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{ $book->id }}</td>
-                    <td><img src="{{ asset('storage/' . $book->photo) }}" width="150px" alt=""></td>
+                    <td>
+                    <!-- Modal Trigger -->
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal{{ $book->id }}">
+                        <img src="{{ asset('storage/photos/' . $book->photoTable) }}" alt="Book Image">
+                    </a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="imageModal{{ $book->id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ $book->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="imageModalLabel{{ $book->id }}">Book Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{{ asset('storage/photos/' . $book->photo) }}" class="img-fluid" alt="Book Image">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </td>
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->author->name }}</td>
                     <td>{{ "Rp. " . number_format($book->price, 2, ',', '.') }}</td>

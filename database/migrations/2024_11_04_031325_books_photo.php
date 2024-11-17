@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->string('photo')->nullable()->after('publication_date');
+            $table->string('photo')->default('default_original.jpg')->after('publication_date');
+            $table->string('photoTable')->default('default_resized.jpg')->after('photo');
         });
     }
 
